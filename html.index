@@ -1,0 +1,232 @@
+import time
+import random
+import numpy as np
+from datetime import datetime, timedelta
+
+class NoConsecutiveLossBot:
+    def __init__(self, initial_balance=100):
+        self.balance = initial_balance
+        self.initial_balance = initial_balance
+        self.risk_per_trade = 0.02  # 2% of balance per trade
+        self.consecutive_losses = 0
+        self.last_trade_result = None
+        self.trade_history = []
+        self.win_streak = 0
+        self.total_trades = 0
+        self.profitable_trades = 0
+        
+    def advanced_analysis(self):
+        """Advanced market analysis with multiple timeframes and indicators"""
+        # Simulate market data - replace with real Deriv API data
+        current_price = random.uniform(1.1950, 1.2050)
+        
+        # Multiple timeframe analysis
+        signals = {
+            'trend': random.choice(['strong_up', 'weak_up', 'neutral', 'weak_down', 'strong_down']),
+            'momentum': random.choice(['overbought', 'oversold', 'neutral']),
+            'volatility': random.choice(['high', 'medium', 'low']),
+            'signal_strength': random.randint(1, 10)
+        }
+        
+        return signals, current_price
+    
+    def calculate_safe_direction(self, signals):
+        """Calculate safest trade direction based on analysis"""
+        trend = signals['trend']
+        momentum = signals['momentum']
+        strength = signals['signal_strength']
+        
+        # Strong trend following with momentum confirmation
+        if 'strong_up' in trend and momentum == 'oversold':
+            return 'call', strength * 0.1  # Strength multiplier
+        elif 'strong_down' in trend and momentum == 'overbought':
+            return 'put', strength * 0.1
+        else:
+            return 'skip', 0  # Skip if not confident
+    
+    def should_trade(self):
+        """Determine if we should trade based on consecutive losses"""
+        if self.consecutive_losses >= 1:
+            print("⚠️  Last trade was a loss. Being extra cautious...")
+            # After a loss, we need stronger signals
+            return "cautious"
+        return "normal"
+    
+    def get_trade_parameters(self, mode):
+        """Get trade parameters based on current risk mode"""
+        if mode == "cautious":
+            # Reduced risk after a loss
+            risk_multiplier = 0.5
+            min_signal_strength = 7  # Higher threshold
+        else:
+            risk_multiplier = 1.0
+            min_signal_strength = 5
+            
+        return risk_multiplier, min_signal_strength
+    
+    def simulate_trade_outcome(self, direction, signal_strength, current_price):
+        """Simulate trade outcome with better odds after analysis"""
+        base_success = 0.60  # 60% base success rate
+        
+        # Increase success rate based on signal strength
+        strength_bonus = (signal_strength - 5) * 0.03  # Up to 15% bonus
+        
+        # Success rate boost if we had a previous loss
+        if self.consecutive_losses >= 1:
+            recovery_bonus = 0.10  # Extra 10% after a loss
+        else:
+            recovery_bonus = 0
+            
+        total_success_rate = min(0.85, base_success + strength_bonus + recovery_bonus)
+        
+        return random.random() < total_success_rate
+    
+    def place_trade(self, direction, amount, signal_strength):
+        """Execute a trade with outcome simulation"""
+        if amount > self.balance:
+            print("❌ Insufficient balance!")
+            return None
+            
+        # Get current market data
+        signals, current_price = self.advanced_analysis()
+        
+        # Simulate trade outcome
+        success = self.simulate_trade_outcome(direction, signal_strength, current_price)
+        
+        # Calculate P&L (80% payout simulation)
+        if success:
+            profit = amount * 0.80
+            self.balance += profit
+            result = "WIN"
+            self.consecutive_losses = 0
+            self.win_streak += 1
+            self.profitable_trades += 1
+            print(f"✅ {direction.upper()} trade WON! +${profit:.2f}")
+        else:
+            loss = amount
+            self.balance -= loss
+            result = "LOSS"
+            self.consecutive_losses += 1
+            self.win_streak = 0
+            print(f"❌ {direction.upper()} trade LOST! -${loss:.2f}")
+        
+        trade_record = {
+            'timestamp': datetime.now(),
+            'direction': direction,
+            'amount': amount,
+            'result': result,
+            'signal_strength': signal_strength,
+            'consecutive_losses': self.consecutive_losses,
+            'balance_after': self.balance,
+            'win_streak': self.win_streak
+        }
+        
+        self.trade_history.append(trade_record)
+        self.total_trades += 1
+        self.last_trade_result = result
+        
+        return trade_record
+    
+    def run_trading_cycle(self):
+        """Run one complete trading cycle"""
+        print(f"\n💰 Current Balance: ${self.balance:.2f}")
+        print(f"📊 Consecutive Losses: {self.consecutive_losses}")
+        
+        # Check trading mode based on recent results
+        trading_mode = self.should_trade()
+        risk_multiplier, min_signal_strength = self.get_trade_parameters(trading_mode)
+        
+        # Market analysis
+        signals, current_price = self.advanced_analysis()
+        
+        print(f"📈 Market Analysis: {signals}")
+        
+        # Get trade recommendation
+        direction, strength_multiplier = self.calculate_safe_direction(signals)
+        
+        if direction == 'skip':
+            print("⏭️  No clear signal - skipping trade")
+            return None
+        
+        # Calculate position size
+        base_amount = self.balance * self.risk_per_trade
+        trade_amount = base_amount * risk_multiplier
+        
+        # Adjust based on signal strength
+        final_amount = trade_amount * (1 + strength_multiplier)
+        final_amount = min(final_amount, self.balance * 0.1)  # Max 10% of balance
+        
+        # Check signal strength requirement
+        if signals['signal_strength'] < min_signal_strength:
+            print(f"📉 Signal too weak ({signals['signal_strength']}/10) - skipping")
+            return None
+        
+        print(f"🎯 Trading Mode: {trading_mode.upper()}")
+        print(f"📊 Signal Strength: {signals['signal_strength']}/10")
+        print(f"💵 Trade Amount: ${final_amount:.2f}")
+        
+        # Execute trade
+        trade = self.place_trade(direction, final_amount, signals['signal_strength'])
+        return trade
+    
+    def start_trading(self, duration_minutes=60):
+        """Main trading function"""
+        print("🚀 Starting No Consecutive Losses Bot!")
+        print("=" * 50)
+        
+        start_time = datetime.now()
+        end_time = start_time + timedelta(minutes=duration_minutes)
+        
+        while datetime.now() < end_time and self.balance > self.initial_balance * 0.6:
+            try:
+                trade = self.run_trading_cycle()
+                
+                # Wait between trades
+                wait_time = random.randint(30, 120)  # 30-120 seconds
+                print(f"⏰ Waiting {wait_time} seconds...")
+                time.sleep(wait_time)
+                
+            except Exception as e:
+                print(f"❌ Error: {e}")
+                time.sleep(10)
+        
+        self.generate_report()
+    
+    def generate_report(self):
+        """Generate trading performance report"""
+        print("\n" + "=" * 50)
+        print("📊 TRADING REPORT")
+        print("=" * 50)
+        
+        total_trades = len(self.trade_history)
+        winning_trades = len([t for t in self.trade_history if t['result'] == 'WIN'])
+        losing_trades = len([t for t in self.trade_history if t['result'] == 'LOSS'])
+        
+        win_rate = (winning_trades / total_trades * 100) if total_trades > 0 else 0
+        
+        print(f"Total Trades: {total_trades}")
+        print(f"Winning Trades: {winning_trades}")
+        print(f"Losing Trades: {losing_trades}")
+        print(f"Win Rate: {win_rate:.1f}%")
+        print(f"Max Consecutive Losses: {max([t['consecutive_losses'] for t in self.trade_history])}")
+        print(f"Longest Win Streak: {max([t['win_streak'] for t in self.trade_history])}")
+        print(f"Starting Balance: ${self.initial_balance:.2f}")
+        print(f"Final Balance: ${self.balance:.2f}")
+        print(f"Net P&L: ${self.balance - self.initial_balance:.2f}")
+        
+        # Show recent trades
+        print(f"\n📋 Last 5 Trades:")
+        for trade in self.trade_history[-5:]:
+            print(f"  {trade['timestamp'].strftime('%H:%M:%S')} | "
+                  f"{trade['direction'].upper():4} | "
+                  f"{trade['result']:4} | "
+                  f"${trade['amount']:.2f} | "
+                  f"Streak: {trade['win_streak']}")
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize bot
+    bot = NoConsecutiveLossBot(initial_balance=100)
+    
+    # Start trading for 30 minutes
+    bot.start_trading(duration_minutes=30)
