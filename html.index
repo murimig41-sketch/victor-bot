@@ -1,232 +1,768 @@
-import time
-import random
-import numpy as np
-from datetime import datetime, timedelta
-
-class NoConsecutiveLossBot:
-    def __init__(self, initial_balance=100):
-        self.balance = initial_balance
-        self.initial_balance = initial_balance
-        self.risk_per_trade = 0.02  # 2% of balance per trade
-        self.consecutive_losses = 0
-        self.last_trade_result = None
-        self.trade_history = []
-        self.win_streak = 0
-        self.total_trades = 0
-        self.profitable_trades = 0
-        
-    def advanced_analysis(self):
-        """Advanced market analysis with multiple timeframes and indicators"""
-        # Simulate market data - replace with real Deriv API data
-        current_price = random.uniform(1.1950, 1.2050)
-        
-        # Multiple timeframe analysis
-        signals = {
-            'trend': random.choice(['strong_up', 'weak_up', 'neutral', 'weak_down', 'strong_down']),
-            'momentum': random.choice(['overbought', 'oversold', 'neutral']),
-            'volatility': random.choice(['high', 'medium', 'low']),
-            'signal_strength': random.randint(1, 10)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keto Wellness - Transform Your Health Naturally</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        return signals, current_price
-    
-    def calculate_safe_direction(self, signals):
-        """Calculate safest trade direction based on analysis"""
-        trend = signals['trend']
-        momentum = signals['momentum']
-        strength = signals['signal_strength']
-        
-        # Strong trend following with momentum confirmation
-        if 'strong_up' in trend and momentum == 'oversold':
-            return 'call', strength * 0.1  # Strength multiplier
-        elif 'strong_down' in trend and momentum == 'overbought':
-            return 'put', strength * 0.1
-        else:
-            return 'skip', 0  # Skip if not confident
-    
-    def should_trade(self):
-        """Determine if we should trade based on consecutive losses"""
-        if self.consecutive_losses >= 1:
-            print("⚠️  Last trade was a loss. Being extra cautious...")
-            # After a loss, we need stronger signals
-            return "cautious"
-        return "normal"
-    
-    def get_trade_parameters(self, mode):
-        """Get trade parameters based on current risk mode"""
-        if mode == "cautious":
-            # Reduced risk after a loss
-            risk_multiplier = 0.5
-            min_signal_strength = 7  # Higher threshold
-        else:
-            risk_multiplier = 1.0
-            min_signal_strength = 5
-            
-        return risk_multiplier, min_signal_strength
-    
-    def simulate_trade_outcome(self, direction, signal_strength, current_price):
-        """Simulate trade outcome with better odds after analysis"""
-        base_success = 0.60  # 60% base success rate
-        
-        # Increase success rate based on signal strength
-        strength_bonus = (signal_strength - 5) * 0.03  # Up to 15% bonus
-        
-        # Success rate boost if we had a previous loss
-        if self.consecutive_losses >= 1:
-            recovery_bonus = 0.10  # Extra 10% after a loss
-        else:
-            recovery_bonus = 0
-            
-        total_success_rate = min(0.85, base_success + strength_bonus + recovery_bonus)
-        
-        return random.random() < total_success_rate
-    
-    def place_trade(self, direction, amount, signal_strength):
-        """Execute a trade with outcome simulation"""
-        if amount > self.balance:
-            print("❌ Insufficient balance!")
-            return None
-            
-        # Get current market data
-        signals, current_price = self.advanced_analysis()
-        
-        # Simulate trade outcome
-        success = self.simulate_trade_outcome(direction, signal_strength, current_price)
-        
-        # Calculate P&L (80% payout simulation)
-        if success:
-            profit = amount * 0.80
-            self.balance += profit
-            result = "WIN"
-            self.consecutive_losses = 0
-            self.win_streak += 1
-            self.profitable_trades += 1
-            print(f"✅ {direction.upper()} trade WON! +${profit:.2f}")
-        else:
-            loss = amount
-            self.balance -= loss
-            result = "LOSS"
-            self.consecutive_losses += 1
-            self.win_streak = 0
-            print(f"❌ {direction.upper()} trade LOST! -${loss:.2f}")
-        
-        trade_record = {
-            'timestamp': datetime.now(),
-            'direction': direction,
-            'amount': amount,
-            'result': result,
-            'signal_strength': signal_strength,
-            'consecutive_losses': self.consecutive_losses,
-            'balance_after': self.balance,
-            'win_streak': self.win_streak
+        body {
+            background-color: #f9f7f3;
+            color: #333;
+            line-height: 1.6;
         }
         
-        self.trade_history.append(trade_record)
-        self.total_trades += 1
-        self.last_trade_result = result
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
         
-        return trade_record
-    
-    def run_trading_cycle(self):
-        """Run one complete trading cycle"""
-        print(f"\n💰 Current Balance: ${self.balance:.2f}")
-        print(f"📊 Consecutive Losses: {self.consecutive_losses}")
+        /* Header Styles */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+        }
         
-        # Check trading mode based on recent results
-        trading_mode = self.should_trade()
-        risk_multiplier, min_signal_strength = self.get_trade_parameters(trading_mode)
+        .header-content {
+            padding: 20px 0;
+        }
         
-        # Market analysis
-        signals, current_price = self.advanced_analysis()
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #5a9367;
+        }
         
-        print(f"📈 Market Analysis: {signals}")
+        .logo i {
+            font-size: 28px;
+        }
         
-        # Get trade recommendation
-        direction, strength_multiplier = self.calculate_safe_direction(signals)
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, rgba(90, 147, 103, 0.1) 0%, rgba(249, 247, 243, 1) 100%);
+            overflow: hidden;
+        }
         
-        if direction == 'skip':
-            print("⏭️  No clear signal - skipping trade")
-            return None
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
         
-        # Calculate position size
-        base_amount = self.balance * self.risk_per_trade
-        trade_amount = base_amount * risk_multiplier
+        .hero-text {
+            flex: 1;
+        }
         
-        # Adjust based on signal strength
-        final_amount = trade_amount * (1 + strength_multiplier)
-        final_amount = min(final_amount, self.balance * 0.1)  # Max 10% of balance
+        .hero-image {
+            flex: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
         
-        # Check signal strength requirement
-        if signals['signal_strength'] < min_signal_strength:
-            print(f"📉 Signal too weak ({signals['signal_strength']}/10) - skipping")
-            return None
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
         
-        print(f"🎯 Trading Mode: {trading_mode.upper()}")
-        print(f"📊 Signal Strength: {signals['signal_strength']}/10")
-        print(f"💵 Trade Amount: ${final_amount:.2f}")
+        .hero-image img:hover {
+            transform: scale(1.03);
+        }
         
-        # Execute trade
-        trade = self.place_trade(direction, final_amount, signals['signal_strength'])
-        return trade
-    
-    def start_trading(self, duration_minutes=60):
-        """Main trading function"""
-        print("🚀 Starting No Consecutive Losses Bot!")
-        print("=" * 50)
+        h1 {
+            font-size: 48px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
         
-        start_time = datetime.now()
-        end_time = start_time + timedelta(minutes=duration_minutes)
+        .highlight {
+            color: #5a9367;
+        }
         
-        while datetime.now() < end_time and self.balance > self.initial_balance * 0.6:
-            try:
-                trade = self.run_trading_cycle()
-                
-                # Wait between trades
-                wait_time = random.randint(30, 120)  # 30-120 seconds
-                print(f"⏰ Waiting {wait_time} seconds...")
-                time.sleep(wait_time)
-                
-            except Exception as e:
-                print(f"❌ Error: {e}")
-                time.sleep(10)
+        .subtitle {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 30px;
+        }
         
-        self.generate_report()
-    
-    def generate_report(self):
-        """Generate trading performance report"""
-        print("\n" + "=" * 50)
-        print("📊 TRADING REPORT")
-        print("=" * 50)
+        .benefits-list {
+            margin: 25px 0;
+            list-style: none;
+        }
         
-        total_trades = len(self.trade_history)
-        winning_trades = len([t for t in self.trade_history if t['result'] == 'WIN'])
-        losing_trades = len([t for t in self.trade_history if t['result'] == 'LOSS'])
+        .benefits-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         
-        win_rate = (winning_trades / total_trades * 100) if total_trades > 0 else 0
+        .benefits-list i {
+            color: #5a9367;
+            font-size: 18px;
+        }
         
-        print(f"Total Trades: {total_trades}")
-        print(f"Winning Trades: {winning_trades}")
-        print(f"Losing Trades: {losing_trades}")
-        print(f"Win Rate: {win_rate:.1f}%")
-        print(f"Max Consecutive Losses: {max([t['consecutive_losses'] for t in self.trade_history])}")
-        print(f"Longest Win Streak: {max([t['win_streak'] for t in self.trade_history])}")
-        print(f"Starting Balance: ${self.initial_balance:.2f}")
-        print(f"Final Balance: ${self.balance:.2f}")
-        print(f"Net P&L: ${self.balance - self.initial_balance:.2f}")
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 18px 45px;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
         
-        # Show recent trades
-        print(f"\n📋 Last 5 Trades:")
-        for trade in self.trade_history[-5:]:
-            print(f"  {trade['timestamp'].strftime('%H:%M:%S')} | "
-                  f"{trade['direction'].upper():4} | "
-                  f"{trade['result']:4} | "
-                  f"${trade['amount']:.2f} | "
-                  f"Streak: {trade['win_streak']}")
+        .cta-button:hover {
+            background-color: #d35400;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+        }
+        
+        .cta-button:active {
+            transform: translateY(1px);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: #2c3e50;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background-color: #f9f7f3;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            color: #5a9367;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: #f0f7f1;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #5a9367;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .author-info h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        /* Recipe Images Section */
+        .recipe-images {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .recipe-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: 250px;
+        }
+        
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .recipe-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Guarantee Section */
+        .guarantee {
+            padding: 60px 0;
+            background-color: #f0f7f1;
+            text-align: center;
+        }
+        
+        .guarantee-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .guarantee-badge {
+            background-color: #e67e22;
+            color: white;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .guarantee-badge span {
+            font-size: 36px;
+            font-weight: 900;
+        }
+        
+        /* Final CTA Section */
+        .final-cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #5a9367 0%, #3a6b47 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .final-cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .final-cta p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        /* FAQ Section */
+        .faq {
+            padding: 80px 0;
+            background-color: #f9f7f3;
+        }
+        
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            background-color: white;
+            padding: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            background-color: #f0f7f1;
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 300px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #5a9367;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #5a9367;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            h1 {
+                font-size: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 30px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero, .features, .testimonials, .recipe-images, .final-cta, .faq {
+                padding: 60px 0;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <span>Keto Wellness</span>
+                </div>
+            </div>
+        </div>
+    </header>
 
-# Example usage
-if __name__ == "__main__":
-    # Initialize bot
-    bot = NoConsecutiveLossBot(initial_balance=100)
-    
-    # Start trading for 30 minutes
-    bot.start_trading(duration_minutes=30)
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Transform Your Health with <span class="highlight">Keto Living</span></h1>
+                    <p class="subtitle">Discover how the keto lifestyle can help you achieve better health, more energy, and sustainable weight management naturally</p>
+                    
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-check-circle"></i> Scientifically proven health benefits</li>
+                        <li><i class="fas fa-check-circle"></i> Delicious, satisfying meals that keep you full</li>
+                        <li><i class="fas fa-check-circle"></i> Simple approach anyone can follow</li>
+                        <li><i class="fas fa-check-circle"></i> Transform your relationship with food</li>
+                    </ul>
+                    
+                    <a href="https://www.digistore24.com/redir/292043/wizz8079/" class="cta-button" target="_blank">Click Here to See More →</a>
+                    
+                    <p style="margin-top: 15px; font-size: 14px; color: #777;">Join 50,000+ people who transformed their health with keto</p>
+                </div>
+                
+                <div class="hero-image">
+                    <img src="https://kalynskitchen.com/wp-content/uploads/2023/01/1-1200-Keto-Crack-Chicken-Bake.jpg" alt="Keto Chicken Bake">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">What You'll Get with Keto</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="feature-title">Improved Cholesterol Levels</h3>
+                    <p>Keto can help increase HDL (good cholesterol) while lowering LDL (bad cholesterol) particles for better heart health.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="feature-title">Accelerated Fat Burning</h3>
+                    <p>Switch your body to fat-burning mode. Ketosis helps you burn stored fat for energy instead of carbohydrates.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="feature-title">Lower Blood Pressure</h3>
+                    <p>Many people experience normalized blood pressure on keto due to reduced inflammation and improved insulin sensitivity.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line-down"></i>
+                    </div>
+                    <h3 class="feature-title">Reduced Blood Sugar Levels</h3>
+                    <p>Keto naturally stabilizes blood sugar by minimizing carbohydrate intake, which can be especially beneficial for insulin resistance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipe Images Section -->
+    <section class="recipe-images">
+        <div class="container">
+            <h2 class="section-title">Delicious Keto Recipes</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto; font-size: 18px;">
+                Discover mouthwatering keto meals that are both healthy and satisfying. These are just a few examples of what's possible with keto cooking.
+            </p>
+            
+            <div class="images-grid">
+                <div class="recipe-image">
+                    <img src="https://heretocook.com/wp-content/uploads/2020/02/Keto-chicken-thighs-recipe-with-mushroom-sauce.jpg" alt="Keto Chicken Thighs">
+                </div>
+                
+                <div class="recipe-image">
+                    <img src="https://hips.hearstapps.com/hmg-prod/images/keto-pork-chops-lead-68c97f89972a8.jpg?crop=1xw:1xh;center,top&resize=1400:*" alt="Keto Pork Chops">
+                </div>
+                
+                <div class="recipe-image">
+                    <img src="https://d104wv11b7o3gc.cloudfront.net/wp-content/uploads/2020/03/chicken-florentine-1-600x900.jpg" alt="Keto Chicken Florentine">
+                </div>
+                
+                <div class="recipe-image">
+                    <img src="https://www.eatwell101.com/wp-content/uploads/2018/09/keto-bread-recipe-8.jpg" alt="Keto Bread">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Community Says</h2>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I've tried 4 different keto approaches, and this is by far the most effective. I lost 28 pounds in 3 months and my energy levels have never been better!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Lost 28 lbs on keto</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As a diabetic, finding a sustainable way to manage my blood sugar was a struggle until I discovered keto. My A1C dropped from 8.2 to 5.6 in just 4 months!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Roberts</h4>
+                            <p>Type 2 diabetic</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I was skeptical about keto at first, but these recipes proved me wrong. The food is delicious and I don't feel deprived at all. I've maintained my weight loss for over a year!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AL</div>
+                        <div class="author-info">
+                            <h4>Amanda Lee</h4>
+                            <p>Keto for 2 years</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee -->
+    <section class="guarantee">
+        <div class="container">
+            <div class="guarantee-content">
+                <div class="guarantee-badge">
+                    <span>30</span>
+                    DAYS
+                </div>
+                
+                <h2 style="font-size: 36px; margin-bottom: 20px;">Risk-Free Exploration</h2>
+                <p style="font-size: 18px; max-width: 700px; margin: 0 auto 30px;">We're so confident you'll love the keto lifestyle that we offer a satisfaction guarantee on our recommended resources. If you're not completely satisfied, simply reach out within 30 days for support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Transform Your Health?</h2>
+            <p>Discover how simple and delicious keto living can be with our curated collection of resources, meal plans, and expert guidance. Click below to explore our recommendations.</p>
+            
+            <a href="https://www.digistore24.com/redir/292043/wizz8079/" class="cta-button" target="_blank">Click Here to See More →</a>
+            
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.9;"><i class="fas fa-lock"></i> Secure access • Trusted resources</p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is keto suitable for beginners?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! The keto lifestyle can be adapted for anyone, regardless of experience level. With the right guidance and resources, beginners can successfully transition to keto and enjoy its benefits.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Will I feel hungry on keto?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>One of the greatest benefits of keto is reduced hunger. The combination of healthy fats and adequate protein keeps you feeling satisfied for longer, reducing cravings and unnecessary snacking.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Are keto ingredients expensive?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Not necessarily. While some specialty items can be pricier, many keto staples like eggs, chicken, vegetables, and healthy oils are affordable. We focus on simple recipes with accessible ingredients.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How quickly will I see results?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Many people notice increased energy and reduced cravings within the first week. More significant changes like weight loss and improved lab markers typically become noticeable within 2-4 weeks of consistent keto living.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Keto Wellness</h3>
+                    <p>Helping you achieve better health through sustainable keto living since 2018.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Important Notes</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Medical Disclaimer</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Keto Wellness. All rights reserved. This site provides educational information about the keto lifestyle. Always consult with a healthcare professional before making dietary changes. This site contains affiliate links.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                // Close other open FAQs
+                document.querySelectorAll('.faq-answer.active').forEach(activeAnswer => {
+                    if (activeAnswer !== answer) {
+                        activeAnswer.classList.remove('active');
+                        activeAnswer.previousElementSibling.querySelector('i').classList.remove('fa-chevron-up');
+                        activeAnswer.previousElementSibling.querySelector('i').classList.add('fa-chevron-down');
+                    }
+                });
+                
+                // Toggle current FAQ
+                answer.classList.toggle('active');
+                if (answer.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Track outbound link clicks
+        document.querySelectorAll('a[href*="digistore24.com"]').forEach(link => {
+            link.addEventListener('click', function() {
+                // In a real implementation, you might want to track this click with analytics
+                console.log('Outbound link clicked:', this.href);
+            });
+        });
+    </script>
+</body>
+</html>
